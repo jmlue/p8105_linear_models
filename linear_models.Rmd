@@ -166,3 +166,41 @@ nyc_airbnb %>%
   knitr::kable(digits = 2)
 ```
 
+
+##Homicides in Baltimore (for HW5 prob 1)
+
+```{r, eval= FALSE}
+baltimore_df = 
+  read_csv("") %>%
+  filter(city == "Baltimore") %>%
+  mutate(
+    resolved = as.numeric(disposition == "Closed by arrest"),
+    victim_age = as.numeric(victim_age)
+  ) %>%
+  select(resolved, victim_age, victim_race, victim_sex)
+```
+
+
+Fitting logistic regression
+
+```{r, eval=FALSE}
+fit_logistic =
+  baltimore_df %>%
+  glm(
+    resolved = victim_age + victim_race + victim_sex,
+    data = _,
+    family = binomial()
+  )
+```
+
+look at model results
+```{r}
+fit_logistic %>%
+  broom::tidy() %>%
+  mutate(OR = exp(estimate)) %>%
+  select(term, estimate, OR)
+
+baltimore_df %>% 
+  count(victim_race)
+```
+
